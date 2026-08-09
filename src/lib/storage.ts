@@ -71,10 +71,10 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
 
 // Default GitHub Config
 export const DEFAULT_GITHUB_CONFIG: GitHubConfig = {
-  owner: 'lootfan-org',
-  repo: 'pops-enfermagem-app',
+  owner: 'batistaproducts',
+  repo: 'pops_Enf_Visualizer',
   branch: 'main',
-  personalToken: '',
+  personalToken: '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',
   autoSync: true,
   lastSync: new Date().toISOString(),
   syncStatus: 'synced',
