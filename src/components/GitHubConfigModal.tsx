@@ -27,8 +27,8 @@ export const GitHubConfigModal: React.FC<GitHubConfigModalProps> = ({
   onClose,
   onSaveConfig,
 }) => {
-  const [owner, setOwner] = useState(config.owner || '');
-  const [repo, setRepo] = useState(config.repo || '');
+  const [owner, setOwner] = useState(config.owner || 'batistaproducts');
+  const [repo, setRepo] = useState(config.repo || 'pops_Enf_Visualizer');
   const [branch, setBranch] = useState(config.branch || 'main');
   const [personalToken, setPersonalToken] = useState(config.personalToken || '');
   const [autoSync, setAutoSync] = useState(config.autoSync ?? true);
@@ -178,6 +178,20 @@ export const GitHubConfigModal: React.FC<GitHubConfigModalProps> = ({
 
         {/* Form Body */}
         <form onSubmit={handleSaveForm} className="p-4 space-y-3">
+          <div className="bg-purple-50 p-2.5 rounded-lg border border-purple-200 text-purple-900 text-[11px] flex items-center justify-between">
+            <span>Repositório Alvo: <strong>batistaproducts/pops_Enf_Visualizer</strong></span>
+            <button
+              type="button"
+              onClick={() => {
+                setOwner('batistaproducts');
+                setRepo('pops_Enf_Visualizer');
+              }}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-[10px] font-bold"
+            >
+              Aplicar Alvo
+            </button>
+          </div>
+
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-[10px] font-bold uppercase text-slate-600 mb-1">

@@ -1,5 +1,96 @@
 import { GitHubConfig, PopItem, Hospital } from '../types';
 
+export async function ensureGitHubRepositoryExists(config: GitHubConfig): Promise<{ success: boolean; message: string }> {
+  if (!config.owner || !config.repo || !config.personalToken) {
+    return { success: false, message: 'Owner, repo or token missing.' };
+  }
+
+  try {
+    // 1. Check if repo exists
+    const checkRes = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}`, {
+      headers: {
+        Authorization: `Bearer ${config.personalToken}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+    });
+
+    if (checkRes.ok) {
+      return { success: true, message: `Repositório ${config.owner}/${config.repo} já existe.` };
+    }
+
+    // 2. If not exists, try creating it under user or org
+    // Try user endpoint first: POST /user/repos
+    let createRes = await fetch('https://api.github.com/user/repos', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${config.personalToken}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: config.repo,
+        description: 'EnfermaPOP - Visualizador e Gestor de POPs de Enfermagem',
+        private: false,
+        auto_init: true,
+      }),
+    });
+
+    if (createRes.ok) {
+      return { success: true, message: `Repositório ${config.owner}/${config.repo} criado com sucesso!` };
+    }
+
+    // Try org endpoint if user endpoint failed: POST /orgs/{org}/repos
+    createRes = await fetch(`https://api.github.com/orgs/${config.owner}/repos`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${config.personalToken}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: config.repo,
+        description: 'EnfermaPOP - Visualizador e Gestor de POPs de Enfermagem',
+        private: false,
+        auto_init: true,
+      }),
+    });
+
+    if (createRes.ok) {
+      return { success: true, message: `Repositório ${config.owner}/${config.repo} criado na organização!` };
+    }
+
+    const err = await createRes.json();
+    return { success: false, message: `Falha ao criar repositório: ${err.message || 'Erro desconhecido'}` };
+  } catch (error) {
+    return { success: false, message: `Erro ao verificar/criar repositório: ${(error as Error).message}` };
+  }
+}
+
+export async function fetchGitHubCommitsAndFiles(config: GitHubConfig): Promise<{ success: boolean; commits?: any[]; message?: string }> {
+  if (!config.owner || !config.repo || !config.personalToken) {
+    return { success: false, message: 'Configuração incompleta.' };
+  }
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/commits`, {
+      headers: {
+        Authorization: `Bearer ${config.personalToken}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      return { success: false, message: `Erro ao buscar commits: ${err.message}` };
+    }
+
+    const commits = await res.json();
+    return { success: true, commits };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+}
+
 export async function syncPopsToGitHub(
   pops: PopItem[],
   config: GitHubConfig
@@ -12,6 +103,9 @@ export async function syncPopsToGitHub(
   }
 
   try {
+    // Ensure repo exists first
+    await ensureGitHubRepositoryExists(config);
+
     const filePath = config.dataFilePath || 'pops_data.json';
     const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch || 'main'}`;
 
@@ -159,3 +253,4 @@ export async function syncHospitalsToGitHub(
     return { success: false, message: (error as Error).message };
   }
 }
+
