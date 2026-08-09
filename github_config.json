@@ -1,0 +1,11 @@
+{
+  "owner": "lootfan-org",
+  "repo": "pops-enfermagem-app",
+  "branch": "main",
+  "personalToken": "",
+  "autoSync": true,
+  "lastSync": "2026-08-09T07:30:00.000Z",
+  "syncStatus": "synced",
+  "dataFilePath": "pops_data.json",
+  "hospitalsFilePath": "hospitals.json"
+}

@@ -1,0 +1,344 @@
+[
+  {
+    "id": "pop-001",
+    "code": "POP-ENF-001",
+    "title": "Higienização das Mãos no Ambiente Hospitalar",
+    "category": "Infectologia & Biossegurança",
+    "hospitalIds": ["hosp-001", "hosp-002", "hosp-003"],
+    "version": "3.0",
+    "lastUpdated": "2026-01-15",
+    "author": "Enf. Dra. Camila Rodrigues - COREN-SP 123456",
+    "revisedBy": "Comissão de Controle de Infecção Hospitalar (CCIH)",
+    "objective": "Padronizar a técnica de higienização simples e antisséptica das mãos para prevenir infecções relacionadas à assistência à saúde (IRAS).",
+    "targetAudience": "Toda a equipe de enfermagem, médicos e equipe multiprofissional.",
+    "materials": [
+      "Sabonete líquido neutro ou antisséptico (Clorexidina 2% ou PVPI)",
+      "Preparação alcoólica 70% (gel ou líquida)",
+      "Papel toalha não reciclado",
+      "Lixeira com acionamento por pedal"
+    ],
+    "keywords": ["higienização", "mãos", "ccih", "biossegurança", "antissepsia", "lavagem", "álcool gel", "infecção"],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Abertura da Torneira e Molhar as Mãos",
+        "description": "Abrir a torneira e molhar as mãos, evitando encostar na pia."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Aplicação do Sabonete",
+        "description": "Aplicar na palma da mão quantidade suficiente de sabonete líquido para cobrir toda a superfície das mãos."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Fricção das Palmas",
+        "description": "Friccionar as palmas das mãos entre si em movimentos circulares durante 5 segundos."
+      },
+      {
+        "stepNumber": 4,
+        "title": "Fricção do Dorso e Espaços Interdigitais",
+        "description": "Friccionar a palma da mão direita contra o dorso da mão esquerda entrelaçando os dedos e vice-versa."
+      },
+      {
+        "stepNumber": 5,
+        "title": "Dedos e Polegares",
+        "description": "Friccionar o dorso dos dedos de uma mão com a palma da mão oposta e friccionar o polegar esquerdo com o auxílio da palma da mão direita em movimento circular e vice-versa."
+      },
+      {
+        "stepNumber": 6,
+        "title": "Polpas Digitais e Unhas",
+        "description": "Friccionar as polpas digitais e unhas da mão direita contra a palma da mão esquerda, fechada em concha, e vice-versa."
+      },
+      {
+        "stepNumber": 7,
+        "title": "Enxágue e Secagem",
+        "description": "Enxaguar as mãos com água abundante no sentido dos dedos para os punhos. Secar com papel toalha descartável e fechar a torneira usando o papel."
+      }
+    ],
+    "risks": [
+      "Contaminação cruzada por técnica inadequada.",
+      "Lesões dermatológicas por uso excessivo de fricção com papel áspero.",
+      "Falha na secagem favorecendo proliferação bacteriana."
+    ],
+    "references": "ANVISA. Higienização das Mãos em Serviços de Saúde. Brasília, 2019. Resolução COFEN nº 0543/2017.",
+    "pdfUrl": "",
+    "pdfFileName": "POP-ENF-001-Higienizacao-Maos.pdf",
+    "isOfflineAvailable": true
+  },
+  {
+    "id": "pop-002",
+    "code": "POP-ENF-002",
+    "title": "Cateterismo Venoso Periférico (CVP)",
+    "category": "Procedimentos Invasivos",
+    "hospitalIds": ["hosp-001", "hosp-002"],
+    "version": "2.1",
+    "lastUpdated": "2026-02-01",
+    "author": "Enf. Msc. Lucas Andrade - COREN-SP 234567",
+    "revisedBy": "Coordenação de Enfermagem de Urgência e Emergência",
+    "objective": "Estabelecer acesso venoso periférico patente e seguro para administração de medicamentos, soluções e hemoderivados.",
+    "targetAudience": "Enfermeiros e Técnicos de Enfermagem habilitados.",
+    "materials": [
+      "Cateter sobre agulha (Abocath/Jelco) de calibre adequado (18G a 24G)",
+      "Garrote descartável de borracha",
+      "Algodão ou gaze estéril",
+      "Álcool a 70% ou Clorexidina alcoólica 0,5%",
+      "Extensour duas vias com conector bi-conector / Polifix",
+      "Seringa de 10mL com Solução Fisiológica 0,9% para salinização",
+      "Curativo filme transparente estéril para fixação",
+      "Luvas de procedimento estéreis/procedimento",
+      "Fita adesiva hipoalergênica para identificação (Data, Calibre, Responsável)"
+    ],
+    "keywords": ["cateter", "veia", "punção", "cvp", "abocath", "jelco", "salinização", "medicação", "acesso venoso"],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Preparação e Explicação ao Paciente",
+        "description": "Conferir a prescrição médica, higienizar as mãos, reunir o material na bandeja e orientar o paciente sobre o procedimento."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Seleção do Sítio de Punção",
+        "description": "Garrotear o membro superior escolhido acima do sítio selecionado (preferencialmente veias do antebraço), inspecionar e palpar a veia."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Antissepsia e Paramentação",
+        "description": "Calçar luvas de procedimento. Realizar antissepsia da pele com fricção de algodão/gaze com Álcool 70% por 30 segundos e aguardar secagem natural."
+      },
+      {
+        "stepNumber": 4,
+        "title": "Punção Venosa",
+        "description": "Tracionar a pele com o polegar abaixo do local. Inserir o cateter com o bisel voltado para cima em ângulo de 15º a 30º até visualizar refluxo de sangue na câmara."
+      },
+      {
+        "stepNumber": 5,
+        "title": "Avanço do Cateter e Retirada do Mandril",
+        "description": "Reduzir o ângulo, avançar a cânula de teflon para dentro do vaso enquanto recua o mandril agulhado. Soltar o garrote."
+      },
+      {
+        "stepNumber": 6,
+        "title": "Conexão e Teste de Salinização",
+        "description": "Conectar o extenso polifix previamente preenchido com SF 0,9%. Aspirar delicadamente para confirmar retorno venoso e injetar 5 a 10mL de SF 0,9% sem resistência."
+      },
+      {
+        "stepNumber": 7,
+        "title": "Fixação e Identificação",
+        "description": "Fixar o cateter com curativo filme transparente estéril. Colocar etiqueta com data, hora, calibre do dispositivo e nome/COREN do profissional."
+      }
+    ],
+    "risks": [
+      "Flebite mecânica ou química.",
+      "Infiltração e extravasamento de soluções vesicantes.",
+      "Hematoma e infecção da corrente sanguínea associada ao cateter."
+    ],
+    "references": "Infusion Nurses Society (INS). Diretrizes de Práticas para Terapia Infusional, 2021. COFEN nº 564/2017.",
+    "pdfUrl": "",
+    "pdfFileName": "POP-ENF-002-Cateterismo-Venoso.pdf",
+    "isOfflineAvailable": true
+  },
+  {
+    "id": "pop-003",
+    "code": "POP-ENF-003",
+    "title": "Administração Segura de Medicamentos (Os 9 Certos)",
+    "category": "Farmacologia & Segurança do Paciente",
+    "hospitalIds": ["hosp-001", "hosp-002", "hosp-003"],
+    "version": "4.0",
+    "lastUpdated": "2026-01-20",
+    "author": "Enf. Dra. Mariana Souza - COREN-SP 345678",
+    "revisedBy": "Núcleo de Segurança do Paciente (NSP)",
+    "objective": "Garantir a administração correta e segura de medicamentos, mitigando erros de medicação e eventos adversos.",
+    "targetAudience": "Enfermeiros, Técnicos e Auxiliares de Enfermagem.",
+    "materials": [
+      "Prontuário/Prescrição médica checada",
+      "Bandeja desinfetada com álcool 70%",
+      "Seringas, agulhas e ampolas/frascos prescritos",
+      "Pulseira de identificação do paciente com código de barras",
+      "Leitor de código de barras / Checagem beira-leito"
+    ],
+    "keywords": ["medicamento", "segurança", "9 certos", "dose", "via", "paciente certo", "farmácia", "prescrição"],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "1. Paciente Certo",
+        "description": "Conferir o nome completo e data de nascimento na pulseira de identificação e perguntar ativamente ao paciente."
+      },
+      {
+        "stepNumber": 2,
+        "title": "2. Medicamento Certo",
+        "description": "Conferir o rótulo do medicamento com a prescrição médica no mínimo três vezes (retirar do armário, preparar e descartar)."
+      },
+      {
+        "stepNumber": 3,
+        "title": "3. Via Certa",
+        "description": "Confirmar a via de administração prescrita (EV, IM, SC, VO, Topica) e se a apresentação é adequada para a via."
+      },
+      {
+        "stepNumber": 4,
+        "title": "4. Hora Certa",
+        "description": "Administrar o medicamento no horário aprazado respeitando a janela de tolerância da instituição (30 min)."
+      },
+      {
+        "stepNumber": 5,
+        "title": "5. Dose Certa",
+        "description": "Conferir a dosagem, realizar cálculos de gotejamento ou diluição e solicitar dupla checagem para medicamentos de alta vigilância."
+      },
+      {
+        "stepNumber": 6,
+        "title": "6. Registro Certo",
+        "description": "Checar imediatamente no sistema eletrônico ou prontuário físico após a administração com assinatura e carimbo."
+      },
+      {
+        "stepNumber": 7,
+        "title": "7. Orientação Certa",
+        "description": "Informar ao paciente e acompanhante qual medicação está sendo administrada e seu objetivo."
+      },
+      {
+        "stepNumber": 8,
+        "title": "8. Forma Certa",
+        "description": "Verificar se o medicamento pode ser macerado, diluído ou se exige infusão lenta/rápida."
+      },
+      {
+        "stepNumber": 9,
+        "title": "9. Resposta Certa (Monitoramento)",
+        "description": "Avaliar os efeitos terapêuticos e possíveis reações adversas logo após a administração."
+      }
+    ],
+    "risks": [
+      "Troca de paciente ou medicamento por distração.",
+      "Reações anafiláticas graves por falta de checagem de alergias.",
+      "Sobredosagem por erro de cálculo de diluição."
+    ],
+    "references": "Ministério da Saúde. Protocolo de Segurança na Prescrição, Uso e Administração de Medicamentos, 2014.",
+    "pdfUrl": "",
+    "pdfFileName": "POP-ENF-003-Administracao-Medicamentos.pdf",
+    "isOfflineAvailable": true
+  },
+  {
+    "id": "pop-004",
+    "code": "POP-ENF-004",
+    "title": "Atendimento à Parada Cardiorrespiratória (PCR) em Adulto",
+    "category": "Urgência & Emergência",
+    "hospitalIds": ["hosp-001", "hosp-003"],
+    "version": "2.0",
+    "lastUpdated": "2026-02-05",
+    "author": "Enf. Esp. Roberto Silva - COREN-SP 456789",
+    "revisedBy": "Equipe de Suporte Avançado de Vida (SAV)",
+    "objective": "Padronizar as ações da equipe de enfermagem durante a Parada Cardiorrespiratória (PCR) segundo diretrizes do ACLS/AHA.",
+    "targetAudience": "Enfermeiros e Técnicos da Unidade de Terapia Intensiva, Pronto Socorro e Enfermarias.",
+    "materials": [
+      "Carrinho de Emergência com Desfibrilador/DEA testado",
+      "Prancha rígida para compressões",
+      "BVM (Bolsa-Válvula-Máscara / Ambu) com reservatório conectado ao Oxigênio (15L/min)",
+      "Kits para Intubação Orotraqueal (Laringoscópio, tubos endotraqueais, fios guia)",
+      "Drogas vasoativas e cristalóides (Epinefrina, Amiodarona, SF 0,9%)",
+      "Dispositivos para Acesso Venoso / Intraósseo"
+    ],
+    "keywords": ["pcr", "parada cardiorrespiratória", "compressão", "dea", "desfibrilador", "ambu", "acls", "massa cardíaca", "emergência"],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Reconhecimento e Solicitação de Ajuda",
+        "description": "Avaliar responsividade e respiração (gasping/ausente) em até 10 segundos. Checar pulso carotídeo simultaneamente. Chamar ajuda e solicitar o Carrinho de Emergência/DEA."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Posicionamento na Prancha Rígida",
+        "description": "Posicionar o paciente em decúbito dorsal sobre a prancha rígida sob o tórax."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Iniciar Compressões Torácicas de Alta Qualidade (C-A-B)",
+        "description": "Posicionar as mãos no terço inferior do esterno. Comprimir a uma frequência de 100 a 120 bpm e profundidade de 5 a 6 cm. Permitir o retorno total do tórax. Minimizar interrupções."
+      },
+      {
+        "stepNumber": 4,
+        "title": "Abertura de Vias Aéreas e Ventilação",
+        "description": "Realizar 30 compressões para 2 ventilações com Bolsa-Válvula-Máscara acoplada a O2 15L/min até obtenção de via aérea avançada."
+      },
+      {
+        "stepNumber": 5,
+        "title": "Checagem do Ritmo com Desfibrilador/DEA",
+        "description": "Ligar o DEA ou Desfibrilador manual. Se ritmo chocável (TV sem pulso ou FV), carregar o choque (200J bifásico), afastar a equipe e aplicar o choque. Reiniciar compressões imediatamente."
+      },
+      {
+        "stepNumber": 6,
+        "title": "Acesso Venoso e Administração de Medicamentos",
+        "description": "Obter acesso venoso periférico calibroso. Administrar Epinefrina 1mg EV a cada 3 a 5 minutos. Se ritmo chocável refratário, aplicar Amiodarona 300mg na 1ª dose e 150mg na 2ª dose."
+      }
+    ],
+    "risks": [
+      "Atraso no início das compressões torácicas.",
+      "Compressões ineficazes por fadiga do socorrista (trocar a cada 2 minutos).",
+      "Chocar com profissional em contato físico com o paciente."
+    ],
+    "references": "American Heart Association (AHA). Diretrizes de RCP e ACE, 2020. Sociedade Brasileira de Cardiologia (SBC), 2019.",
+    "pdfUrl": "",
+    "pdfFileName": "POP-ENF-004-Atendimento-PCR.pdf",
+    "isOfflineAvailable": true
+  },
+  {
+    "id": "pop-005",
+    "code": "POP-ENF-005",
+    "title": "Sondagem Nasogástrica (SNG) e Nasoenteral (SNE)",
+    "category": "Procedimentos Invasivos",
+    "hospitalIds": ["hosp-002"],
+    "version": "1.5",
+    "lastUpdated": "2026-01-28",
+    "author": "Enf. Esp. Fernanda Lima - COREN-SP 567890",
+    "revisedBy": "Equipe de Nutrição Enteral e Gastroenterologia",
+    "objective": "Padronizar a inserção de sonda nasogástrica/nasoenteral para administração de dietas, medicamentos ou descompressão gástrica.",
+    "targetAudience": "Exclusivo do Enfermeiro (Resolução COFEN nº 637/2020).",
+    "materials": [
+      "Sonda nasoenteral com fio guia (mandril) ou sonda nasogástrica (Levine)",
+      "Gel lubrificante hidrossolúvel (Xilocaína 2% gel)",
+      "Estetoscópio e seringa de 20mL a 50mL",
+      "Fita métrica flexível",
+      "Fita pH-métrica",
+      "Fixação específica para sonda nasal / Fita hipoalergênica",
+      "Copo com água e canudo (se o paciente puder deglutir)",
+      "Bacia de inox e toalha"
+    ],
+    "keywords": ["sonda", "nasoenteral", "nasogástrica", "sng", "sne", "nutrição", "lavagem gástrica", "levine"],
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Medição do Comprimento da Sonda",
+        "description": "Medir a distância do ápice do nariz ao lóbulo da orelha e deste até o apêndice xifóide. Para localização enteral (SNE), adicionar de 10 a 15 cm adicionais."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Posicionamento do Paciente",
+        "description": "Colocar o paciente na posição de Fowler elevada (45º a 90º) com a cabeça levemente inclinada para frente."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Lubrificação e Introdução",
+        "description": "Lubrificar os primeiros 10 cm da sonda com gel hidrossolúvel. Introduzir suavemente por uma das narinas direcionando para a nasofaringe."
+      },
+      {
+        "stepNumber": 4,
+        "title": "Deglutição Orientada",
+        "description": "Pedir ao paciente que realize movimentos de deglutição (ou tome pequenos goles de água) enquanto a sonda é avançada até a marca pré-estabelecida."
+      },
+      {
+        "stepNumber": 5,
+        "title": "Testes de Posicionamento",
+        "description": "Injetar 10 a 20mL de ar enquanto ausculta a região epigástrica com estetoscópio. Aspirar conteúdo gástrico e testar pH. Para SNE, solicitar Raio-X de confirmação antes de liberar a dieta."
+      },
+      {
+        "stepNumber": 6,
+        "title": "Fixação e Retirada do Mandril",
+        "description": "Fixar a sonda com fita hipoalergênica na asa do nariz. Se SNE, retirar o fio guia com cuidado após confirmação do posicionamento correto."
+      }
+    ],
+    "risks": [
+      "Inserção em via aérea (traqueia/pulmão) provocando pneumotórax ou broncoaspiração.",
+      "Lesão de mucosa nasal e sangramento.",
+      "Liberar dieta enteral sem confirmação radiológica da SNE."
+    ],
+    "references": "Resolução COFEN nº 637/2020. Diretrizes BRASPEN de Enfermagem em Nutrição Enteral, 2021.",
+    "pdfUrl": "",
+    "pdfFileName": "POP-ENF-005-Sondagem-Nasoenteral.pdf",
+    "isOfflineAvailable": true
+  }
+]

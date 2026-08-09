@@ -1,0 +1,6 @@
+{
+  "name": "EnfermaPOP - POPs de Enfermagem Mobile",
+  "description": "Consulta e visualização mobile de POPs de enfermagem com busca por palavra-chave, leitura offline, gestão por hospital e perfil admin.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
