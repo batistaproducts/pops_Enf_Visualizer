@@ -75,7 +75,7 @@ export const DEFAULT_GITHUB_CONFIG: GitHubConfig = {
   owner: 'batistaproducts',
   repo: 'pops_Enf_Visualizer',
   branch: 'main',
-  personalToken: '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',
+  personalToken: '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',
   autoSync: true,
   lastSync: new Date().toISOString(),
   syncStatus: 'synced',

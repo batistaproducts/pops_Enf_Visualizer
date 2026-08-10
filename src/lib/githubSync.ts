@@ -3,9 +3,8 @@ import { GitHubConfig, PopItem, Hospital } from '../types';
 // Helper to get authorization headers, supporting both Bearer and token prefixes
 function getGitHubHeaders(token: string): Record<string, string> {
   const cleanToken = token.trim();
-  const authHeader = cleanToken.startsWith('ghp_') || cleanToken.startsWith('github_pat_') || cleanToken.startsWith('gho_') || cleanToken.startsWith('ghu_') || cleanToken.startsWith('ghs_')
-    ? `token ${cleanToken}`
-    : `Bearer ${cleanToken}`;
+  // GitHub API accepts Bearer for all token types (classic ghp_ and fine-grained github_pat_)
+  const authHeader = `Bearer ${cleanToken}`;
 
   return {
     Authorization: authHeader,
