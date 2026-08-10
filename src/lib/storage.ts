@@ -130,6 +130,7 @@ export async function initializeAppData(): Promise<{
       const res = await fetch(`/github_config.json?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         fileConfig = await res.json();
+        console.log('Configuração do GitHub carregada com sucesso do arquivo.');
       }
     } catch (e) {
       console.warn('Could not fetch github_config.json', e);
@@ -154,7 +155,7 @@ export async function initializeAppData(): Promise<{
     if (storedHospitals) {
       hospitals = JSON.parse(storedHospitals);
     } else {
-      const res = await fetch('/hospitals.json');
+      const res = await fetch(`/hospitals.json?t=${Date.now()}`);
       if (res.ok) {
         hospitals = await res.json();
       }
@@ -174,7 +175,7 @@ export async function initializeAppData(): Promise<{
       if (storedPops) {
         pops = JSON.parse(storedPops);
       } else {
-        const res = await fetch('/pops_data.json');
+        const res = await fetch(`/pops_data.json?t=${Date.now()}`);
         if (res.ok) {
           pops = await res.json();
         }
@@ -184,17 +185,16 @@ export async function initializeAppData(): Promise<{
     // fallback
   }
 
-  // Final Fallback: If no pops found OR GitHub not configured, use examples
+  // Final Fallback: Garantir que os exemplos apareçam se não houver dados ou se não estiver sincronizado
   const isGitHubConnected = !!githubConfig.personalToken && !!githubConfig.owner && !!githubConfig.repo;
+  const isSynced = githubConfig.syncStatus === 'synced';
   
-  // If we have no pops at all, always show examples
   if (!pops || pops.length === 0) {
     pops = [...EXAMPLE_POPS];
   } else {
-    // If we have pops but they don't contain our examples and we're not fully synced, 
-    // keep examples at the top for guidance
     const hasExamples = pops.some(p => p.id.startsWith('example-'));
-    if (!hasExamples && (!isGitHubConnected || githubConfig.syncStatus !== 'synced')) {
+    // Se não tiver exemplos E (não estiver conectado OU não estiver sincronizado), adiciona os exemplos
+    if (!hasExamples && (!isGitHubConnected || !isSynced)) {
       pops = [...EXAMPLE_POPS, ...pops];
     }
   }
