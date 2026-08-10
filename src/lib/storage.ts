@@ -126,7 +126,8 @@ export async function initializeAppData(): Promise<{
     // Always try to fetch the file config first to have it as a baseline or override
     let fileConfig: Partial<GitHubConfig> = {};
     try {
-      const res = await fetch('/github_config.json');
+      // Use cache: 'no-store' to ensure we get the latest version from server (Vercel)
+      const res = await fetch(`/github_config.json?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         fileConfig = await res.json();
       }
@@ -186,13 +187,14 @@ export async function initializeAppData(): Promise<{
   // Final Fallback: If no pops found OR GitHub not configured, use examples
   const isGitHubConnected = !!githubConfig.personalToken && !!githubConfig.owner && !!githubConfig.repo;
   
-  if (pops.length === 0) {
-    pops = EXAMPLE_POPS;
-  } else if (!isGitHubConnected) {
-    // If not connected, prepend examples to existing data (like pops_data.json)
-    // to ensure user sees "example" content as requested
+  // If we have no pops at all, always show examples
+  if (!pops || pops.length === 0) {
+    pops = [...EXAMPLE_POPS];
+  } else {
+    // If we have pops but they don't contain our examples and we're not fully synced, 
+    // keep examples at the top for guidance
     const hasExamples = pops.some(p => p.id.startsWith('example-'));
-    if (!hasExamples) {
+    if (!hasExamples && (!isGitHubConnected || githubConfig.syncStatus !== 'synced')) {
       pops = [...EXAMPLE_POPS, ...pops];
     }
   }

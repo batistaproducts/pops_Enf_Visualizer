@@ -3,8 +3,10 @@ import { GitHubConfig, PopItem, Hospital } from '../types';
 // Helper to get authorization headers, supporting both Bearer and token prefixes
 function getGitHubHeaders(token: string): Record<string, string> {
   const cleanToken = token.trim();
-  // GitHub API accepts Bearer for all token types (classic ghp_ and fine-grained github_pat_)
-  const authHeader = `Bearer ${cleanToken}`;
+  // Classic tokens (ghp_) often prefer the 'token' prefix, while modern ones use 'Bearer'
+  // Using 'token' is generally safer for classic PATs in the v3 API
+  const isClassic = cleanToken.startsWith('ghp_');
+  const authHeader = isClassic ? `token ${cleanToken}` : `Bearer ${cleanToken}`;
 
   return {
     Authorization: authHeader,
