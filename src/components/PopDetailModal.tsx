@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { PopItem } from '../types';
 import { generatePdfBlobUrl } from '../lib/pdfGenerator';
+import { PdfViewer } from './PdfViewer';
 
 interface PopDetailModalProps {
   pop: PopItem | null;
@@ -160,18 +161,17 @@ export const PopDetailModal: React.FC<PopDetailModalProps> = ({
         {/* Modal Scrollable Body */}
         <div className="p-4 overflow-y-auto flex-1 text-slate-800 bg-[#F3FADC]/30">
           {activeTab === 'pdf' ? (
-            <div className="w-full bg-slate-100 rounded-xl overflow-hidden border border-slate-300 min-h-[500px] flex items-center justify-center">
-              <iframe
-                src={pdfDataUrl}
-                title={`PDF ${pop.title}`}
-                className="w-full h-[550px] rounded-xl border-0"
-                style={{
-                  transform: `scale(${pdfZoom / 100})`,
-                  transformOrigin: 'top left',
-                  width: `${100 * (100 / pdfZoom)}%`,
-                  height: `${550 * (100 / pdfZoom)}px`,
-                }}
-              />
+            <div className="w-full bg-slate-100 rounded-xl overflow-hidden border border-slate-300 min-h-[500px] flex flex-col items-center">
+              <div className="w-full h-full max-h-[650px] overflow-auto bg-slate-50">
+                <PdfViewer dataUrl={pdfDataUrl} zoom={pdfZoom} />
+              </div>
+              
+              {/* Mobile Info Tip */}
+              <div className="sm:hidden w-full bg-blue-50 border-t border-blue-100 p-2 text-center">
+                <p className="text-[10px] text-blue-700 font-medium">
+                  💡 Arraste para navegar no documento.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="space-y-4 max-w-2xl mx-auto bg-white p-5 rounded-2xl border border-[#f8bdc0]/30 shadow-xs">

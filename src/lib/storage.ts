@@ -123,15 +123,24 @@ export async function initializeAppData(): Promise<{
   // 3. GitHub Config
   let githubConfig = DEFAULT_GITHUB_CONFIG;
   try {
-    const storedConfig = localStorage.getItem(STORAGE_KEYS.GITHUB_CONFIG);
-    if (storedConfig) {
-      githubConfig = JSON.parse(storedConfig);
-    } else {
+    // Always try to fetch the file config first to have it as a baseline or override
+    let fileConfig: Partial<GitHubConfig> = {};
+    try {
       const res = await fetch('/github_config.json');
       if (res.ok) {
-        const fileConfig = await res.json();
-        githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...fileConfig };
+        fileConfig = await res.json();
       }
+    } catch (e) {
+      console.warn('Could not fetch github_config.json', e);
+    }
+
+    const storedConfig = localStorage.getItem(STORAGE_KEYS.GITHUB_CONFIG);
+    if (storedConfig) {
+      const parsedStorage = JSON.parse(storedConfig);
+      // Merge: Default < Storage < File (File has priority as requested)
+      githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...parsedStorage, ...fileConfig };
+    } else {
+      githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...fileConfig };
     }
   } catch {
     // fallback
