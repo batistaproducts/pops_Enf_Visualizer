@@ -1,4 +1,5 @@
 import { PopItem, Hospital, GitHubConfig, UserProfile } from '../types';
+import { EXAMPLE_POPS } from './exampleData';
 
 const STORAGE_KEYS = {
   POPS: 'enfermapop_pops_v2',
@@ -171,6 +172,20 @@ export async function initializeAppData(): Promise<{
     }
   } catch {
     // fallback
+  }
+
+  // Final Fallback: If no pops found OR GitHub not configured, use examples
+  const isGitHubConnected = !!githubConfig.personalToken && !!githubConfig.owner && !!githubConfig.repo;
+  
+  if (pops.length === 0) {
+    pops = EXAMPLE_POPS;
+  } else if (!isGitHubConnected) {
+    // If not connected, prepend examples to existing data (like pops_data.json)
+    // to ensure user sees "example" content as requested
+    const hasExamples = pops.some(p => p.id.startsWith('example-'));
+    if (!hasExamples) {
+      pops = [...EXAMPLE_POPS, ...pops];
+    }
   }
 
   return {

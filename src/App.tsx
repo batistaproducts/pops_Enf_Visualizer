@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Plus, Sparkles, Layers } from 'lucide-react';
+import { Search, Plus, Sparkles, Layers, ChevronRight } from 'lucide-react';
 import { PopItem, GitHubConfig } from './types';
 import { initializeAppData, savePopsToStorage, saveGitHubConfigToStorage } from './lib/storage';
 import { Header } from './components/Header';
@@ -151,6 +151,30 @@ export default function App() {
 
       {/* Main Container */}
       <main className="max-w-2xl mx-auto px-4 pt-4">
+        {/* GitHub Connection Notice */}
+        {!githubConfig.personalToken && (
+          <div className="mb-4 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start space-x-3 shadow-sm animate-in fade-in slide-in-from-top-2">
+            <div className="bg-amber-100 p-1.5 rounded-lg text-amber-700 shrink-0">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-[11px] font-bold text-amber-900 uppercase tracking-wider mb-0.5">
+                Modo de Demonstração
+              </h4>
+              <p className="text-xs text-amber-800 leading-relaxed">
+                Você não está conectado ao GitHub. Estamos exibindo <strong>POPs de exemplo</strong> para demonstração. Conecte-se para sincronizar seus próprios procedimentos.
+              </p>
+              <button
+                onClick={() => setIsGitHubModalOpen(true)}
+                className="mt-2 text-[10px] font-bold text-purple-700 hover:text-purple-800 flex items-center space-x-1 uppercase"
+              >
+                <span>Configurar GitHub</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Category Chips */}
         <div className="flex items-center space-x-2 overflow-x-auto pb-3 text-xs scrollbar-none">
           {categories.map((cat) => {

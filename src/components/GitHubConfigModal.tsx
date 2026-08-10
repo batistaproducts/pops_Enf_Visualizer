@@ -8,9 +8,10 @@ import {
   Key,
   Database,
   GitBranch,
+  ShieldCheck,
 } from 'lucide-react';
 import { GitHubConfig, PopItem, Hospital } from '../types';
-import { syncPopsToGitHub, syncHospitalsToGitHub } from '../lib/githubSync';
+import { syncPopsToGitHub, syncHospitalsToGitHub, testGitHubConnection } from '../lib/githubSync';
 
 interface GitHubConfigModalProps {
   config: GitHubConfig;
@@ -38,10 +39,34 @@ export const GitHubConfigModal: React.FC<GitHubConfigModalProps> = ({
   );
 
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
   const [syncFeedback, setSyncFeedback] = useState<{
     type: 'success' | 'error' | 'info' | null;
     message: string;
   }>({ type: null, message: '' });
+
+  const handleTestConnection = async () => {
+    setIsTesting(true);
+    setSyncFeedback({ type: 'info', message: 'Testando conexão com o repositório no GitHub...' });
+    const tempConfig: GitHubConfig = {
+      owner,
+      repo,
+      branch,
+      personalToken,
+      autoSync,
+      lastSync: new Date().toISOString(),
+      syncStatus: 'pending',
+      dataFilePath,
+      hospitalsFilePath,
+    };
+    const res = await testGitHubConnection(tempConfig);
+    if (res.success) {
+      setSyncFeedback({ type: 'success', message: res.message });
+    } else {
+      setSyncFeedback({ type: 'error', message: res.message });
+    }
+    setIsTesting(false);
+  };
 
   // Execute manual GitHub sync
   const handleTriggerSync = async () => {
@@ -143,15 +168,28 @@ export const GitHubConfigModal: React.FC<GitHubConfigModalProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            disabled={isSyncing}
-            onClick={handleTriggerSync}
-            className="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1.5 shadow transition-colors disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Sincronizando...' : 'Sincronizar Agora'}</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              disabled={isTesting || isSyncing}
+              onClick={handleTestConnection}
+              className="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 shadow transition-colors disabled:opacity-50"
+              title="Testar acesso ao repositório"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{isTesting ? 'Testando...' : 'Testar Conexão'}</span>
+            </button>
+
+            <button
+              type="button"
+              disabled={isSyncing || isTesting}
+              onClick={handleTriggerSync}
+              className="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1.5 shadow transition-colors disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+              <span>{isSyncing ? 'Sincronizando...' : 'Sincronizar Agora'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Feedback Alert */}
@@ -260,13 +298,23 @@ export const GitHubConfigModal: React.FC<GitHubConfigModalProps> = ({
               type="password"
               value={personalToken}
               onChange={(e) => setPersonalToken(e.target.value)}
-              placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxx"
+              placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxx ou github_pat_..."
               className="w-full bg-slate-50 border border-slate-300 rounded p-1.5 font-mono text-slate-900"
             />
-            <p className="text-[10px] text-slate-500 mt-1">
-              Necessário permissão <code className="bg-slate-100 px-1 rounded">contents: write</code> no
-              GitHub para enviar commits automaticamente.
-            </p>
+            <div className="mt-1.5 space-y-1 text-[10px] text-slate-600 bg-amber-50 border border-amber-200 p-2 rounded-lg">
+              <p className="font-bold text-amber-900 flex items-center space-x-1">
+                <span>⚠️ Erro 401 (Bad Credentials)? Como resolver:</span>
+              </p>
+              <p>
+                O erro <strong>401 Bad credentials</strong> indica que o <strong>Personal Access Token (PAT)</strong> está incorreto, expirou ou não possui as permissões necessárias.
+              </p>
+              <ul className="list-disc pl-4 space-y-0.5 text-amber-800">
+                <li>Certifique-se de que o token foi copiado sem espaços extras.</li>
+                <li>Gere um novo token em <strong>GitHub &gt; Settings &gt; Developer settings &gt; Personal access tokens</strong>.</li>
+                <li>Para <strong>Tokens Clássicos</strong>: selecione o escopo <code className="bg-amber-100 px-1 rounded">repo</code>.</li>
+                <li>Para <strong>Tokens Granulares (Fine-grained)</strong>: selecione o repositório <code className="bg-amber-100 px-1 rounded">batistaproducts/pops_Enf_Visualizer</code> e defina <strong>Contents: Read and write</strong> e <strong>Metadata: Read-only</strong>.</li>
+              </ul>
+            </div>
           </div>
 
           {/* Auto Sync Toggle */}

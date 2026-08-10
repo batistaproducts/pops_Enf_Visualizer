@@ -1,68 +1,46 @@
 import { GitHubConfig, PopItem, Hospital } from '../types';
 
-export async function ensureGitHubRepositoryExists(config: GitHubConfig): Promise<{ success: boolean; message: string }> {
+// Helper to get authorization headers, supporting both Bearer and token prefixes
+function getGitHubHeaders(token: string): Record<string, string> {
+  const cleanToken = token.trim();
+  const authHeader = cleanToken.startsWith('ghp_') || cleanToken.startsWith('github_pat_') || cleanToken.startsWith('gho_') || cleanToken.startsWith('ghu_') || cleanToken.startsWith('ghs_')
+    ? `token ${cleanToken}`
+    : `Bearer ${cleanToken}`;
+
+  return {
+    Authorization: authHeader,
+    Accept: 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+}
+
+export async function testGitHubConnection(config: GitHubConfig): Promise<{ success: boolean; message: string }> {
   if (!config.owner || !config.repo || !config.personalToken) {
-    return { success: false, message: 'Owner, repo or token missing.' };
+    return { success: false, message: 'Owner, repo ou token não informados.' };
   }
 
   try {
-    // 1. Check if repo exists
-    const checkRes = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}`, {
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-      },
+    const headers = getGitHubHeaders(config.personalToken);
+    const res = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}`, {
+      method: 'GET',
+      headers,
     });
 
-    if (checkRes.ok) {
-      return { success: true, message: `Repositório ${config.owner}/${config.repo} já existe.` };
+    if (res.ok) {
+      return { success: true, message: `Conexão bem-sucedida com ${config.owner}/${config.repo}!` };
     }
 
-    // 2. If not exists, try creating it under user or org
-    // Try user endpoint first: POST /user/repos
-    let createRes = await fetch('https://api.github.com/user/repos', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: config.repo,
-        description: 'EnfermaPOP - Visualizador e Gestor de POPs de Enfermagem',
-        private: false,
-        auto_init: true,
-      }),
-    });
-
-    if (createRes.ok) {
-      return { success: true, message: `Repositório ${config.owner}/${config.repo} criado com sucesso!` };
+    const errData = await res.json().catch(() => ({}));
+    if (res.status === 401) {
+      return { success: false, message: 'Erro 401: Bad credentials. Verifique se o seu Personal Access Token está correto, não expirou e possui as permissões necessárias.' };
+    }
+    if (res.status === 404) {
+      return { success: false, message: `Erro 404: O repositório ${config.owner}/${config.repo} não foi encontrado ou o token não tem permissão para acessá-lo.` };
     }
 
-    // Try org endpoint if user endpoint failed: POST /orgs/{org}/repos
-    createRes = await fetch(`https://api.github.com/orgs/${config.owner}/repos`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: config.repo,
-        description: 'EnfermaPOP - Visualizador e Gestor de POPs de Enfermagem',
-        private: false,
-        auto_init: true,
-      }),
-    });
-
-    if (createRes.ok) {
-      return { success: true, message: `Repositório ${config.owner}/${config.repo} criado na organização!` };
-    }
-
-    const err = await createRes.json();
-    return { success: false, message: `Falha ao criar repositório: ${err.message || 'Erro desconhecido'}` };
+    return { success: false, message: `Erro na API do GitHub (${res.status}): ${errData.message || res.statusText}` };
   } catch (error) {
-    return { success: false, message: `Erro ao verificar/criar repositório: ${(error as Error).message}` };
+    return { success: false, message: `Erro de conexão: ${(error as Error).message}` };
   }
 }
 
@@ -72,16 +50,14 @@ export async function fetchGitHubCommitsAndFiles(config: GitHubConfig): Promise<
   }
 
   try {
+    const headers = getGitHubHeaders(config.personalToken);
     const res = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/commits`, {
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-      },
+      headers,
     });
 
     if (!res.ok) {
-      const err = await res.json();
-      return { success: false, message: `Erro ao buscar commits: ${err.message}` };
+      const err = await res.json().catch(() => ({}));
+      return { success: false, message: `Erro ao buscar commits: ${err.message || res.statusText}` };
     }
 
     const commits = await res.json();
@@ -98,26 +74,19 @@ export async function syncPopsToGitHub(
   if (!config.owner || !config.repo || !config.personalToken) {
     return {
       success: false,
-      message: 'Token de Acesso Pessoal (PAT) do GitHub ou Repositório não configurado. As alterações foram salvas no armazenamento local.',
+      message: 'Token de Acesso Pessoal (PAT) do GitHub ou Repositório não configurado.',
     };
   }
 
   try {
-    // Ensure repo exists first
-    await ensureGitHubRepositoryExists(config);
-
+    const headers = getGitHubHeaders(config.personalToken);
     const filePath = config.dataFilePath || 'pops_data.json';
     const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch || 'main'}`;
 
     // Step 1: Get existing file SHA if present
     let sha: string | undefined = undefined;
     try {
-      const getRes = await fetch(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${config.personalToken}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      });
+      const getRes = await fetch(apiUrl, { headers });
       if (getRes.ok) {
         const fileData = await getRes.json();
         sha = fileData.sha;
@@ -126,9 +95,11 @@ export async function syncPopsToGitHub(
       // SHA might remain undefined for new file
     }
 
+    // Filter out examples before syncing to GitHub
+    const popsToSync = pops.filter(p => !p.id.startsWith('example-'));
+
     // Step 2: Prepare JSON content & base64 encoding
-    const jsonString = JSON.stringify(pops, null, 2);
-    // Universal UTF-8 base64 encoding in browser
+    const jsonString = JSON.stringify(popsToSync, null, 2);
     const base64Content = btoa(
       encodeURIComponent(jsonString).replace(/%([0-9A-F]{2})/g, function (_, p1) {
         return String.fromCharCode(parseInt(p1, 16));
@@ -152,16 +123,15 @@ export async function syncPopsToGitHub(
 
     const putRes = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}`, {
       method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify(putBody),
     });
 
     if (!putRes.ok) {
-      const errData = await putRes.json();
+      const errData = await putRes.json().catch(() => ({}));
+      if (putRes.status === 401) {
+        return { success: false, message: 'Erro 401: Bad credentials. Verifique seu token de acesso.' };
+      }
       return {
         success: false,
         message: `Erro na API do GitHub (${putRes.status}): ${errData.message || 'Falha ao atualizar repositório.'}`,
@@ -194,17 +164,13 @@ export async function syncHospitalsToGitHub(
   }
 
   try {
+    const headers = getGitHubHeaders(config.personalToken);
     const filePath = config.hospitalsFilePath || 'hospitals.json';
     const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch || 'main'}`;
 
     let sha: string | undefined = undefined;
     try {
-      const getRes = await fetch(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${config.personalToken}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      });
+      const getRes = await fetch(apiUrl, { headers });
       if (getRes.ok) {
         const fileData = await getRes.json();
         sha = fileData.sha;
@@ -235,22 +201,19 @@ export async function syncHospitalsToGitHub(
 
     const putRes = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}`, {
       method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${config.personalToken}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify(putBody),
     });
 
     if (putRes.ok) {
       return { success: true, message: 'Hospitais sincronizados no GitHub!' };
     } else {
-      const err = await putRes.json();
-      return { success: false, message: err.message };
+      const err = await putRes.json().catch(() => ({}));
+      return { success: false, message: err.message || 'Erro ao sincronizar hospitais' };
     }
   } catch (error) {
     return { success: false, message: (error as Error).message };
   }
 }
+
 
