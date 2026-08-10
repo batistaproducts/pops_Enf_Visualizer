@@ -1,3 +1,6 @@
+/**
+ * Antonio Batista - [POPs Enfermagem] - 2026-08-10
+ */
 import React, { useState } from 'react';
 import {
   X,

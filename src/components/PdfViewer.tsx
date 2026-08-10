@@ -1,3 +1,6 @@
+/**
+ * Antonio Batista - [POPs Enfermagem] - 2026-08-10
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 

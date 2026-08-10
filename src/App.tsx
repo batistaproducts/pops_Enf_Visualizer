@@ -1,3 +1,6 @@
+/**
+ * Antonio Batista - [POPs Enfermagem] - 2026-08-10
+ */
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Plus, Sparkles, Layers, ChevronRight } from 'lucide-react';
 import { PopItem, GitHubConfig } from './types';

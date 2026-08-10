@@ -1,16 +1,18 @@
+/**
+ * Antonio Batista - [POPs Enfermagem] - 2026-08-10
+ */
 import { GitHubConfig, PopItem, Hospital } from '../types';
 
-// Helper to get authorization headers, supporting both Bearer and token prefixes
+// Helper para obter cabeçalhos de autorização do GitHub
 function getGitHubHeaders(token: string): Record<string, string> {
   const cleanToken = token.trim();
-  // Classic tokens (ghp_) often prefer the 'token' prefix, while modern ones use 'Bearer'
-  // Using 'token' is generally safer for classic PATs in the v3 API
-  const isClassic = cleanToken.startsWith('ghp_');
-  const authHeader = isClassic ? `token ${cleanToken}` : `Bearer ${cleanToken}`;
+  // Fine-grained tokens (github_pat_) EXIGEM o prefixo 'Bearer'
+  const authHeader = `Bearer ${cleanToken}`;
 
   return {
-    Authorization: authHeader,
-    Accept: 'application/vnd.github.v3+json',
+    'Authorization': authHeader,
+    'Accept': 'application/vnd.github.v3+json',
+    'X-GitHub-Api-Version': '2022-11-28',
     'Content-Type': 'application/json',
   };
 }

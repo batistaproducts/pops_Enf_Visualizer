@@ -1,3 +1,6 @@
+/**
+ * Antonio Batista - [POPs Enfermagem] - 2026-08-10
+ */
 import { PopItem, Hospital, GitHubConfig, UserProfile } from '../types';
 import { EXAMPLE_POPS } from './exampleData';
 
@@ -139,8 +142,17 @@ export async function initializeAppData(): Promise<{
     const storedConfig = localStorage.getItem(STORAGE_KEYS.GITHUB_CONFIG);
     if (storedConfig) {
       const parsedStorage = JSON.parse(storedConfig);
-      // Merge: Default < Storage < File (File has priority as requested)
-      githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...parsedStorage, ...fileConfig };
+      // Merge: Default < Storage < File (Arquivo tem prioridade total como solicitado)
+      githubConfig = { 
+        ...DEFAULT_GITHUB_CONFIG, 
+        ...parsedStorage, 
+        ...fileConfig 
+      };
+      
+      // Se o arquivo contém um token, ele deve prevalecer sobre o localStorage
+      if (fileConfig.personalToken) {
+        githubConfig.personalToken = fileConfig.personalToken;
+      }
     } else {
       githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...fileConfig };
     }
