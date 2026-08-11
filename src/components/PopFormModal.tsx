@@ -30,7 +30,7 @@ export const PopFormModal: React.FC<PopFormModalProps> = ({
     initialPop?.code || `POP-00${Math.floor(Math.random() * 90 + 10)}`
   );
   const [title, setTitle] = useState(initialPop?.title || '');
-  const [category, setCategory] = useState(initialPop?.category || 'Procedimentos Invasivos');
+  const [category, setCategory] = useState(initialPop?.category || 'Procedimentos');
   const [version, setVersion] = useState(initialPop?.version || '1.0');
   const [author, setAuthor] = useState(initialPop?.author || 'Enfermeiro Responsável');
   const [objective, setObjective] = useState(initialPop?.objective || '');
@@ -212,8 +212,11 @@ export const PopFormModal: React.FC<PopFormModalProps> = ({
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#f8bdc0]"
                 >
-                  <option value="Procedimentos Invasivos">Procedimentos Invasivos</option>
+                  <option value="Procedimentos">Procedimentos</option>
                   <option value="Medicação e Infusão">Medicação e Infusão</option>
+                  <option value="Farmacologia">Farmacologia</option>
+                  <option value="Segurança do Paciente">Segurança do Paciente</option>
+                  <option value="Curativos">Curativos</option>
                   <option value="Higiene e Conforto">Higiene e Conforto</option>
                   <option value="Sinais Vitais e Avaliação">Sinais Vitais e Avaliação</option>
                   <option value="Emergência e Terapia Intensiva">Emergência e Terapia Intensiva</option>

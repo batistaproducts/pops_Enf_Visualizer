@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div>
               <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">
-                Gestão de POPs/Enfermagem
+                Portal de POPs - Enfermagem
               </h1>
               <p className="text-xs text-slate-600">
                 Visualizador e Cadastro de Procedimentos (PDFs)
