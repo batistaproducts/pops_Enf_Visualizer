@@ -9,11 +9,10 @@
     "lastUpdated": "2026-08-11",
     "author": "Enfermeiro Responsável",
     "revisedBy": "Comissão de Qualidade",
-    "objective": "V20",
+    "objective": "V20000",
     "targetAudience": "Equipe Assistencial",
     "materials": [
       "Luvas de procedimento",
-      "Álcool 70%",
       "SSS"
     ],
     "keywords": [
@@ -22,11 +21,6 @@
     "steps": [
       {
         "stepNumber": 1,
-        "title": "Higienização e Prep",
-        "description": "Realizar higienização e conferir a identificação."
-      },
-      {
-        "stepNumber": 2,
         "title": "Passo 2",
         "description": "TTTS"
       }
