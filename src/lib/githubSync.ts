@@ -6,8 +6,11 @@ import { GitHubConfig, PopItem, Hospital } from '../types';
 // Helper para obter cabeçalhos de autorização do GitHub
 function getGitHubHeaders(token: string): Record<string, string> {
   const cleanToken = token.trim();
-  // Fine-grained tokens (github_pat_) EXIGEM o prefixo 'Bearer'
-  const authHeader = `Bearer ${cleanToken}`;
+  // Tokens clássicos (ghp_) funcionam bem com 'token' ou 'Bearer', mas 'Bearer' é o padrão moderno.
+  // Fine-grained tokens (github_pat_) EXIGEM o prefixo 'Bearer'.
+  // Para máxima compatibilidade, detectamos se é clássico.
+  const isClassic = cleanToken.startsWith('ghp_');
+  const authHeader = isClassic ? `token ${cleanToken}` : `Bearer ${cleanToken}`;
 
   return {
     'Authorization': authHeader,

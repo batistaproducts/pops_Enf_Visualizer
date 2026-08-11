@@ -91,7 +91,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
               ⚙
             </div>
             <div>
-              <h3 className="text-sm font-bold">Painel do Administrador (Gestão de POPs)</h3>
+              <h3 className="text-sm font-bold">Painel do Administrador (Gestão de POPs de enfermagem)</h3>
               <p className="text-[11px] text-slate-400">
                 Gerencie catálogo de procedimentos, instituições e arquivos de persistência
               </p>
