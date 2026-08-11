@@ -95,7 +95,7 @@ export default function App() {
   }, [pops, selectedCategory, searchQuery]);
 
   // Handlers
-  const handleSavePop = (savedPop: PopItem) => {
+  const handleSavePop = async (savedPop: PopItem) => {
     let updatedPops: PopItem[];
     const exists = pops.some((p) => p.id === savedPop.id);
 
@@ -111,14 +111,47 @@ export default function App() {
     savePopsToStorage(updatedPops);
     setIsFormModalOpen(false);
     setPopToEdit(null);
+
+    // Auto-sync to GitHub if configured
+    if (githubConfig.autoSync && githubConfig.personalToken && githubConfig.owner && githubConfig.repo) {
+      try {
+        const { syncPopsToGitHub } = await import('./lib/githubSync');
+        const result = await syncPopsToGitHub(updatedPops, githubConfig);
+        if (result.success) {
+          console.log('Sincronização automática concluída com sucesso');
+          // Optional: show a subtle success toast if needed
+        } else {
+          console.error('Falha na sincronização automática:', result.message);
+          showToast(`Erro ao sincronizar com GitHub: ${result.message}`);
+        }
+      } catch (err) {
+        console.error('Erro na importação dinâmica de githubSync:', err);
+      }
+    }
   };
 
-  const handleDeletePop = (popId: string) => {
+  const handleDeletePop = async (popId: string) => {
     if (window.confirm('Tem certeza que deseja excluir este POP?')) {
       const updatedPops = pops.filter((p) => p.id !== popId);
       setPops(updatedPops);
       savePopsToStorage(updatedPops);
       showToast('POP excluído com sucesso.');
+
+      // Auto-sync to GitHub if configured
+      if (githubConfig.autoSync && githubConfig.personalToken && githubConfig.owner && githubConfig.repo) {
+        try {
+          const { syncPopsToGitHub } = await import('./lib/githubSync');
+          const result = await syncPopsToGitHub(updatedPops, githubConfig);
+          if (result.success) {
+            console.log('Sincronização automática após exclusão concluída');
+          } else {
+            console.error('Falha na sincronização automática após exclusão:', result.message);
+            showToast(`Erro ao sincronizar exclusão: ${result.message}`);
+          }
+        } catch (err) {
+          console.error('Erro na importação dinâmica de githubSync:', err);
+        }
+      }
     }
   };
 
