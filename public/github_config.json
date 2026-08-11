@@ -6,6 +6,6 @@
   "autoSync": true,
   "lastSync": "2026-08-09T07:30:00.000Z",
   "syncStatus": "synced",
-  "dataFilePath": "pops_data.json",
-  "hospitalsFilePath": "hospitals.json"
+  "dataFilePath": "public/pops_data.json",
+  "hospitalsFilePath": "public/hospitals.json"
 }

@@ -177,6 +177,7 @@ export async function initializeAppData(): Promise<{
     const res = await fetch(`/hospitals.json?t=${Date.now()}`, { cache: 'no-store' });
     if (res.ok) {
       hospitals = await res.json();
+      console.log('Antonio Batista - [POPs Enfermagem] - Hospitais carregados do arquivo JSON');
       localStorage.setItem(STORAGE_KEYS.HOSPITALS, JSON.stringify(hospitals));
     } else {
       const storedHospitals = localStorage.getItem(STORAGE_KEYS.HOSPITALS);
@@ -191,10 +192,11 @@ export async function initializeAppData(): Promise<{
   let pops: PopItem[] = [];
   try {
     // SEMPRE tenta buscar o arquivo JSON primeiro para refletir edições manuais ou do GitHub
+    // No Vercel/Vite, o arquivo em 'public/pops_data.json' é servido em '/pops_data.json'
     const res = await fetch(`/pops_data.json?t=${Date.now()}`, { cache: 'no-store' });
     if (res.ok) {
       pops = await res.json();
-      console.log('Antonio Batista - [POPs Enfermagem] - POPs carregados do arquivo JSON (Mestre)');
+      console.log('Antonio Batista - [POPs Enfermagem] - POPs carregados do arquivo mestre (public/pops_data.json)');
       // Atualiza o cache local para manter sincronia
       savePopsToStorage(pops);
     } else {
