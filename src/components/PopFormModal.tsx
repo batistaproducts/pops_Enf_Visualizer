@@ -145,9 +145,11 @@ export const PopFormModal: React.FC<PopFormModalProps> = ({
       isOfflineAvailable: true,
     };
 
-    // Remove auto-generation of PDF DataURL here to avoid bloatting the JSON.
-    // The PDF will be generated at runtime in PopDetailModal.tsx if customPdfDataUrl is missing.
-    
+    // Auto-generate PDF DataURL if no custom PDF attached
+    if (!popToSave.customPdfDataUrl) {
+      popToSave.customPdfDataUrl = generatePdfBlobUrl(popToSave);
+    }
+
     onSave(popToSave);
   };
 

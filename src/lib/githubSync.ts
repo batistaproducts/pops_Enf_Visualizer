@@ -76,7 +76,8 @@ export async function fetchGitHubCommitsAndFiles(config: GitHubConfig): Promise<
 
 export async function syncPopsToGitHub(
   pops: PopItem[],
-  config: GitHubConfig
+  config: GitHubConfig,
+  customMessage?: string
 ): Promise<{ success: boolean; message: string; lastSync?: string }> {
   if (!config.owner || !config.repo || !config.personalToken) {
     return {
@@ -102,19 +103,13 @@ export async function syncPopsToGitHub(
       // SHA might remain undefined for new file
     }
 
-    // Filter out examples and minimize payload size
-    const popsToSync = pops.filter(p => !p.id.startsWith('example-'));
-
-    // Step 2: Prepare JSON content & robust base64 encoding (UTF-8 safe)
-    const jsonString = JSON.stringify(popsToSync, null, 2);
-    
-    // Robust UTF-8 Base64 encoding
-    const utf8Bytes = new TextEncoder().encode(jsonString);
-    let binary = '';
-    for (let i = 0; i < utf8Bytes.byteLength; i++) {
-      binary += String.fromCharCode(utf8Bytes[i]);
-    }
-    const base64Content = btoa(binary);
+    // Step 2: Prepare JSON content & base64 encoding (UTF-8 safe)
+    const jsonString = JSON.stringify(pops, null, 2);
+    const base64Content = btoa(
+      encodeURIComponent(jsonString).replace(/%([0-9A-F]{2})/g, function (_, p1) {
+        return String.fromCharCode(parseInt(p1, 16));
+      })
+    );
 
     const putBody: {
       message: string;
@@ -122,7 +117,7 @@ export async function syncPopsToGitHub(
       branch: string;
       sha?: string;
     } = {
-      message: `[EnfermaPOP] Atualização de POPs (${new Date().toLocaleString('pt-BR')})`,
+      message: customMessage || `[EnfermaPOP] Atualização de POPs (${new Date().toLocaleString('pt-BR')})`,
       content: base64Content,
       branch: config.branch || 'main',
     };
@@ -164,7 +159,8 @@ export async function syncPopsToGitHub(
 
 export async function syncHospitalsToGitHub(
   hospitals: Hospital[],
-  config: GitHubConfig
+  config: GitHubConfig,
+  customMessage?: string
 ): Promise<{ success: boolean; message: string }> {
   if (!config.owner || !config.repo || !config.personalToken) {
     return {
@@ -190,14 +186,11 @@ export async function syncHospitalsToGitHub(
     }
 
     const jsonString = JSON.stringify(hospitals, null, 2);
-    
-    // Robust UTF-8 Base64 encoding
-    const utf8Bytes = new TextEncoder().encode(jsonString);
-    let binary = '';
-    for (let i = 0; i < utf8Bytes.byteLength; i++) {
-      binary += String.fromCharCode(utf8Bytes[i]);
-    }
-    const base64Content = btoa(binary);
+    const base64Content = btoa(
+      encodeURIComponent(jsonString).replace(/%([0-9A-F]{2})/g, function (_, p1) {
+        return String.fromCharCode(parseInt(p1, 16));
+      })
+    );
 
     const putBody: {
       message: string;
@@ -205,7 +198,7 @@ export async function syncHospitalsToGitHub(
       branch: string;
       sha?: string;
     } = {
-      message: `[EnfermaPOP] Sincronização de Hospitais (${new Date().toLocaleString('pt-BR')})`,
+      message: customMessage || `[EnfermaPOP] Sincronização de Hospitais (${new Date().toLocaleString('pt-BR')})`,
       content: base64Content,
       branch: config.branch || 'main',
     };
