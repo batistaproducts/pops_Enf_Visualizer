@@ -189,13 +189,13 @@ export const PopDetailModal: React.FC<PopDetailModalProps> = ({
               )}
 
               {/* Steps */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                  Passo a Passo
-                </h4>
-                <div className="space-y-2.5">
-                  {pop.steps && pop.steps.length > 0 ? (
-                    pop.steps.map((step, idx) => (
+              {pop.steps && pop.steps.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                    Passo a Passo
+                  </h4>
+                  <div className="space-y-2.5">
+                    {pop.steps.map((step, idx) => (
                       <div
                         key={idx}
                         className="bg-[#F3FADC]/40 p-3 rounded-xl border border-[#f8bdc0]/30"
@@ -205,12 +205,10 @@ export const PopDetailModal: React.FC<PopDetailModalProps> = ({
                         </span>
                         <p className="text-xs text-slate-700 leading-relaxed">{step.description}</p>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-slate-500 italic">Nenhum passo cadastrado.</p>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Materials */}
               {pop.materials && pop.materials.length > 0 && (

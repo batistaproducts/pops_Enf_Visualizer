@@ -78,7 +78,7 @@ export const DEFAULT_GITHUB_CONFIG: GitHubConfig = {
   owner: 'batistaproducts',
   repo: 'pops_Enf_Visualizer',
   branch: 'main',
-  personalToken: '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',
+  personalToken: import.meta.env.VITE_GITHUB_TOKEN || '',
   autoSync: true,
   lastSync: new Date().toISOString(),
   syncStatus: 'synced',
@@ -150,12 +150,22 @@ export async function initializeAppData(): Promise<{
         ...fileConfig 
       };
       
-      // Forçar o token do arquivo se ele existir
-      if (fileConfig.personalToken) {
+      // Prioridade máxima para a variável de ambiente se ela estiver definida
+      const envToken = import.meta.env.VITE_GITHUB_TOKEN;
+      if (envToken) {
+        githubConfig.personalToken = envToken;
+      } else if (fileConfig.personalToken) {
+        // Fallback para o arquivo se não houver variável de ambiente
         githubConfig.personalToken = fileConfig.personalToken;
       }
     } else {
       githubConfig = { ...DEFAULT_GITHUB_CONFIG, ...fileConfig };
+      
+      // Garantir variável de ambiente no caso de não haver storage
+      const envToken = import.meta.env.VITE_GITHUB_TOKEN;
+      if (envToken) {
+        githubConfig.personalToken = envToken;
+      }
     }
   } catch {
     // fallback
