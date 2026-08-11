@@ -98,6 +98,7 @@ export default function App() {
   const handleSavePop = async (savedPop: PopItem) => {
     let updatedPops: PopItem[];
     const exists = pops.some((p) => p.id === savedPop.id);
+    const actionLabel = exists ? 'Atualização' : 'Criação';
 
     if (exists) {
       updatedPops = pops.map((p) => (p.id === savedPop.id ? savedPop : p));
@@ -116,10 +117,14 @@ export default function App() {
     if (githubConfig.autoSync && githubConfig.personalToken && githubConfig.owner && githubConfig.repo) {
       try {
         const { syncPopsToGitHub } = await import('./lib/githubSync');
-        const result = await syncPopsToGitHub(updatedPops, githubConfig);
+        const commitMsg = `Antonio Batista - [POPs Enfermagem] - ${actionLabel}: ${savedPop.title} - ${new Date().toLocaleString('pt-BR')}`;
+        
+        console.log('Iniciando sincronização com GitHub...');
+        const result = await syncPopsToGitHub(updatedPops, githubConfig, commitMsg);
+        
         if (result.success) {
           console.log('Sincronização automática concluída com sucesso');
-          // Optional: show a subtle success toast if needed
+          showToast('Sincronizado com GitHub!');
         } else {
           console.error('Falha na sincronização automática:', result.message);
           showToast(`Erro ao sincronizar com GitHub: ${result.message}`);
@@ -131,7 +136,10 @@ export default function App() {
   };
 
   const handleDeletePop = async (popId: string) => {
-    if (window.confirm('Tem certeza que deseja excluir este POP?')) {
+    const popToDelete = pops.find(p => p.id === popId);
+    if (!popToDelete) return;
+
+    if (window.confirm(`Tem certeza que deseja excluir o POP "${popToDelete.title}"?`)) {
       const updatedPops = pops.filter((p) => p.id !== popId);
       setPops(updatedPops);
       savePopsToStorage(updatedPops);
@@ -141,9 +149,12 @@ export default function App() {
       if (githubConfig.autoSync && githubConfig.personalToken && githubConfig.owner && githubConfig.repo) {
         try {
           const { syncPopsToGitHub } = await import('./lib/githubSync');
-          const result = await syncPopsToGitHub(updatedPops, githubConfig);
+          const commitMsg = `Antonio Batista - [POPs Enfermagem] - Exclusão: ${popToDelete.title} - ${new Date().toLocaleString('pt-BR')}`;
+          
+          const result = await syncPopsToGitHub(updatedPops, githubConfig, commitMsg);
           if (result.success) {
             console.log('Sincronização automática após exclusão concluída');
+            showToast('Exclusão sincronizada com GitHub.');
           } else {
             console.error('Falha na sincronização automática após exclusão:', result.message);
             showToast(`Erro ao sincronizar exclusão: ${result.message}`);

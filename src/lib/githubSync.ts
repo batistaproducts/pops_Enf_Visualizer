@@ -76,7 +76,8 @@ export async function fetchGitHubCommitsAndFiles(config: GitHubConfig): Promise<
 
 export async function syncPopsToGitHub(
   pops: PopItem[],
-  config: GitHubConfig
+  config: GitHubConfig,
+  customMessage?: string
 ): Promise<{ success: boolean; message: string; lastSync?: string }> {
   if (!config.owner || !config.repo || !config.personalToken) {
     return {
@@ -122,7 +123,7 @@ export async function syncPopsToGitHub(
       branch: string;
       sha?: string;
     } = {
-      message: `[EnfermaPOP] Atualização de POPs (${new Date().toLocaleString('pt-BR')})`,
+      message: customMessage || `[EnfermaPOP] Atualização de POPs (${new Date().toLocaleString('pt-BR')})`,
       content: base64Content,
       branch: config.branch || 'main',
     };
@@ -164,7 +165,8 @@ export async function syncPopsToGitHub(
 
 export async function syncHospitalsToGitHub(
   hospitals: Hospital[],
-  config: GitHubConfig
+  config: GitHubConfig,
+  customMessage?: string
 ): Promise<{ success: boolean; message: string }> {
   if (!config.owner || !config.repo || !config.personalToken) {
     return {
@@ -205,7 +207,7 @@ export async function syncHospitalsToGitHub(
       branch: string;
       sha?: string;
     } = {
-      message: `[EnfermaPOP] Sincronização de Hospitais (${new Date().toLocaleString('pt-BR')})`,
+      message: customMessage || `[EnfermaPOP] Sincronização de Hospitais (${new Date().toLocaleString('pt-BR')})`,
       content: base64Content,
       branch: config.branch || 'main',
     };
