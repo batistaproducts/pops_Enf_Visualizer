@@ -87,7 +87,7 @@ export async function syncPopsToGitHub(
 
   try {
     const headers = getGitHubHeaders(config.personalToken);
-    const filePath = config.dataFilePath || 'pops_data.json';
+    const filePath = config.dataFilePath || 'public/pops_data.json';
     const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch || 'main'}`;
 
     // Step 1: Get existing file SHA if present
@@ -172,7 +172,7 @@ export async function syncHospitalsToGitHub(
 
   try {
     const headers = getGitHubHeaders(config.personalToken);
-    const filePath = config.hospitalsFilePath || 'hospitals.json';
+    const filePath = config.hospitalsFilePath || 'public/hospitals.json';
     const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${config.branch || 'main'}`;
 
     let sha: string | undefined = undefined;

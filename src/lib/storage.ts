@@ -82,8 +82,8 @@ export const DEFAULT_GITHUB_CONFIG: GitHubConfig = {
   autoSync: true,
   lastSync: new Date().toISOString(),
   syncStatus: 'synced',
-  dataFilePath: 'pops_data.json',
-  hospitalsFilePath: 'hospitals.json',
+  dataFilePath: 'public/pops_data.json',
+  hospitalsFilePath: 'public/hospitals.json',
 };
 
 // Fetch initial JSON files from root or local storage
@@ -171,41 +171,46 @@ export async function initializeAppData(): Promise<{
     // fallback
   }
 
-  // 4. Hospitals
+  // 4. Hospitals (Prioridade: Arquivo JSON, Fallback: LocalStorage)
   let hospitals: Hospital[] = [];
   try {
-    const storedHospitals = localStorage.getItem(STORAGE_KEYS.HOSPITALS);
-    if (storedHospitals) {
-      hospitals = JSON.parse(storedHospitals);
+    const res = await fetch(`/hospitals.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (res.ok) {
+      hospitals = await res.json();
+      localStorage.setItem(STORAGE_KEYS.HOSPITALS, JSON.stringify(hospitals));
     } else {
-      const res = await fetch(`/hospitals.json?t=${Date.now()}`, { cache: 'no-store' });
-      if (res.ok) {
-        hospitals = await res.json();
-      }
+      const storedHospitals = localStorage.getItem(STORAGE_KEYS.HOSPITALS);
+      if (storedHospitals) hospitals = JSON.parse(storedHospitals);
     }
   } catch {
-    // fallback
+    const storedHospitals = localStorage.getItem(STORAGE_KEYS.HOSPITALS);
+    if (storedHospitals) hospitals = JSON.parse(storedHospitals);
   }
 
-  // 5. POPs (Prefer IndexedDB then LocalStorage)
+  // 5. POPs (Prioridade: JSON do Servidor/GitHub, Fallback: LocalStorage/IDB)
   let pops: PopItem[] = [];
   try {
-    const idbPops = await getPopsFromIDB();
-    if (idbPops && idbPops.length > 0) {
-      pops = idbPops;
+    // SEMPRE tenta buscar o arquivo JSON primeiro para refletir edições manuais ou do GitHub
+    const res = await fetch(`/pops_data.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (res.ok) {
+      pops = await res.json();
+      console.log('Antonio Batista - [POPs Enfermagem] - POPs carregados do arquivo JSON (Mestre)');
+      // Atualiza o cache local para manter sincronia
+      savePopsToStorage(pops);
     } else {
-      const storedPops = localStorage.getItem(STORAGE_KEYS.POPS);
-      if (storedPops) {
-        pops = JSON.parse(storedPops);
+      // Se falhar o fetch (ex: offline), busca do cache local
+      const idbPops = await getPopsFromIDB();
+      if (idbPops && idbPops.length > 0) {
+        pops = idbPops;
       } else {
-        const res = await fetch(`/pops_data.json?t=${Date.now()}`, { cache: 'no-store' });
-        if (res.ok) {
-          pops = await res.json();
-        }
+        const storedPops = localStorage.getItem(STORAGE_KEYS.POPS);
+        if (storedPops) pops = JSON.parse(storedPops);
       }
     }
   } catch {
-    // fallback
+    // fallback para cache se houver erro de rede
+    const idbPops = await getPopsFromIDB();
+    if (idbPops && idbPops.length > 0) pops = idbPops;
   }
 
   // Final Fallback: Garantir que os exemplos apareçam se não houver dados ou se não estiver sincronizado
