@@ -18,13 +18,7 @@
     "keywords": [
       "procedimentos invasivos"
     ],
-    "steps": [
-      {
-        "stepNumber": 1,
-        "title": "Higienização e Prep",
-        "description": "Realizar higienização e conferir a identificação."
-      }
-    ],
+    "steps": [],
     "risks": [],
     "references": "",
     "pdfFileName": "diploma-Antonio_Batista (21).pdf",
