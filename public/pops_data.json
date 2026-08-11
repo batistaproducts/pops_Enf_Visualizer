@@ -21,11 +21,6 @@
     "steps": [
       {
         "stepNumber": 1,
-        "title": "Higienização e Prep",
-        "description": "Realizar higienização e conferir a identificação."
-      },
-      {
-        "stepNumber": 2,
         "title": "Passo 2",
         "description": "m,....jgvg"
       }
