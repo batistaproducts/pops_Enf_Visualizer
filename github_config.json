@@ -1,0 +1,11 @@
+{
+  "owner": "batistaproducts",
+  "repo": "pops_Enf_Visualizer",
+  "branch": "main",
+  "personalToken": "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",
+  "autoSync": true,
+  "lastSync": "2026-08-09T07:30:00.000Z",
+  "syncStatus": "synced",
+  "dataFilePath": "pops_data.json",
+  "hospitalsFilePath": "hospitals.json"
+}
