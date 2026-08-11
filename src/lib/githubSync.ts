@@ -102,16 +102,19 @@ export async function syncPopsToGitHub(
       // SHA might remain undefined for new file
     }
 
-    // Filter out examples before syncing to GitHub
+    // Filter out examples and minimize payload size
     const popsToSync = pops.filter(p => !p.id.startsWith('example-'));
 
-    // Step 2: Prepare JSON content & base64 encoding
+    // Step 2: Prepare JSON content & robust base64 encoding (UTF-8 safe)
     const jsonString = JSON.stringify(popsToSync, null, 2);
-    const base64Content = btoa(
-      encodeURIComponent(jsonString).replace(/%([0-9A-F]{2})/g, function (_, p1) {
-        return String.fromCharCode(parseInt(p1, 16));
-      })
-    );
+    
+    // Robust UTF-8 Base64 encoding
+    const utf8Bytes = new TextEncoder().encode(jsonString);
+    let binary = '';
+    for (let i = 0; i < utf8Bytes.byteLength; i++) {
+      binary += String.fromCharCode(utf8Bytes[i]);
+    }
+    const base64Content = btoa(binary);
 
     const putBody: {
       message: string;
@@ -187,11 +190,14 @@ export async function syncHospitalsToGitHub(
     }
 
     const jsonString = JSON.stringify(hospitals, null, 2);
-    const base64Content = btoa(
-      encodeURIComponent(jsonString).replace(/%([0-9A-F]{2})/g, function (_, p1) {
-        return String.fromCharCode(parseInt(p1, 16));
-      })
-    );
+    
+    // Robust UTF-8 Base64 encoding
+    const utf8Bytes = new TextEncoder().encode(jsonString);
+    let binary = '';
+    for (let i = 0; i < utf8Bytes.byteLength; i++) {
+      binary += String.fromCharCode(utf8Bytes[i]);
+    }
+    const base64Content = btoa(binary);
 
     const putBody: {
       message: string;

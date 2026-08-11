@@ -4,11 +4,7 @@
     "code": "POP-ENF-001",
     "title": "Higienização das Mãos no Ambiente Hospitalar",
     "category": "Biossegurança",
-    "hospitalIds": [
-      "hosp-001",
-      "hosp-002",
-      "hosp-003"
-    ],
+    "hospitalIds": ["hosp-001", "hosp-002", "hosp-003"],
     "version": "3.0",
     "lastUpdated": "2026-01-15",
     "author": "Enf. Dra. Camila Rodrigues - COREN-SP 123456",
@@ -21,16 +17,7 @@
       "Papel toalha não reciclado",
       "Lixeira com acionamento por pedal"
     ],
-    "keywords": [
-      "higienização",
-      "mãos",
-      "ccih",
-      "biossegurança",
-      "antissepsia",
-      "lavagem",
-      "álcool gel",
-      "infecção"
-    ],
+    "keywords": ["higienização", "mãos", "ccih", "biossegurança", "antissepsia", "lavagem", "álcool gel", "infecção"],
     "steps": [],
     "risks": [
       "Contaminação cruzada por técnica inadequada.",
@@ -47,10 +34,7 @@
     "code": "POP-ENF-002",
     "title": "Cateterismo Venoso Periférico (CVP)",
     "category": "Procedimentos Invasivos",
-    "hospitalIds": [
-      "hosp-001",
-      "hosp-002"
-    ],
+    "hospitalIds": ["hosp-001", "hosp-002"],
     "version": "2.1",
     "lastUpdated": "2026-02-01",
     "author": "Enf. Msc. Lucas Andrade - COREN-SP 234567",
@@ -68,17 +52,7 @@
       "Luvas de procedimento estéreis/procedimento",
       "Fita adesiva hipoalergênica para identificação (Data, Calibre, Responsável)"
     ],
-    "keywords": [
-      "cateter",
-      "veia",
-      "punção",
-      "cvp",
-      "abocath",
-      "jelco",
-      "salinização",
-      "medicação",
-      "acesso venoso"
-    ],
+    "keywords": ["cateter", "veia", "punção", "cvp", "abocath", "jelco", "salinização", "medicação", "acesso venoso"],
     "steps": [],
     "risks": [
       "Flebite mecânica ou química.",
@@ -95,11 +69,7 @@
     "code": "POP-ENF-003",
     "title": "Administração Segura de Medicamentos (Os 9 Certos)",
     "category": "Farmacologia & Segurança do Paciente",
-    "hospitalIds": [
-      "hosp-001",
-      "hosp-002",
-      "hosp-003"
-    ],
+    "hospitalIds": ["hosp-001", "hosp-002", "hosp-003"],
     "version": "4.0",
     "lastUpdated": "2026-01-20",
     "author": "Enf. Dra. Mariana Souza - COREN-SP 345678",
@@ -113,16 +83,7 @@
       "Pulseira de identificação do paciente com código de barras",
       "Leitor de código de barras / Checagem beira-leito"
     ],
-    "keywords": [
-      "medicamento",
-      "segurança",
-      "9 certos",
-      "dose",
-      "via",
-      "paciente certo",
-      "farmácia",
-      "prescrição"
-    ],
+    "keywords": ["medicamento", "segurança", "9 certos", "dose", "via", "paciente certo", "farmácia", "prescrição"],
     "steps": [],
     "risks": [
       "Troca de paciente ou medicamento por distração.",
@@ -139,10 +100,7 @@
     "code": "POP-ENF-004",
     "title": "Atendimento à Parada Cardiorrespiratória (PCR) em Adulto",
     "category": "Urgência & Emergência",
-    "hospitalIds": [
-      "hosp-001",
-      "hosp-003"
-    ],
+    "hospitalIds": ["hosp-001", "hosp-003"],
     "version": "2.0",
     "lastUpdated": "2026-02-05",
     "author": "Enf. Esp. Roberto Silva - COREN-SP 456789",
@@ -157,17 +115,7 @@
       "Drogas vasoativas e cristalóides (Epinefrina, Amiodarona, SF 0,9%)",
       "Dispositivos para Acesso Venoso / Intraósseo"
     ],
-    "keywords": [
-      "pcr",
-      "parada cardiorrespiratória",
-      "compressão",
-      "dea",
-      "desfibrilador",
-      "ambu",
-      "acls",
-      "massa cardíaca",
-      "emergência"
-    ],
+    "keywords": ["pcr", "parada cardiorrespiratória", "compressão", "dea", "desfibrilador", "ambu", "acls", "massa cardíaca", "emergência"],
     "steps": [],
     "risks": [
       "Atraso no início das compressões torácicas.",
@@ -184,9 +132,7 @@
     "code": "POP-ENF-005",
     "title": "Sondagem Nasogástrica (SNG) e Nasoenteral (SNE)",
     "category": "Procedimentos Invasivos",
-    "hospitalIds": [
-      "hosp-002"
-    ],
+    "hospitalIds": ["hosp-002"],
     "version": "1.5",
     "lastUpdated": "2026-01-28",
     "author": "Enf. Esp. Fernanda Lima - COREN-SP 567890",
@@ -203,16 +149,7 @@
       "Copo com água e canudo (se o paciente puder deglutir)",
       "Bacia de inox e toalha"
     ],
-    "keywords": [
-      "sonda",
-      "nasoenteral",
-      "nasogástrica",
-      "sng",
-      "sne",
-      "nutrição",
-      "lavagem gástrica",
-      "levine"
-    ],
+    "keywords": ["sonda", "nasoenteral", "nasogástrica", "sng", "sne", "nutrição", "lavagem gástrica", "levine"],
     "steps": [],
     "risks": [
       "Inserção em via aérea (traqueia/pulmão) provocando pneumotórax ou broncoaspiração.",
