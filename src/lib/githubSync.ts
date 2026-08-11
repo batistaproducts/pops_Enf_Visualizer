@@ -18,6 +18,7 @@ function getGitHubHeaders(token: string): Record<string, string> {
 }
 
 export async function testGitHubConnection(config: GitHubConfig): Promise<{ success: boolean; message: string }> {
+  console.log('Antonio Batista - [POPs Enfermagem] - Testando conexão com GitHub');
   if (!config.owner || !config.repo || !config.personalToken) {
     return { success: false, message: 'Owner, repo ou token não informados.' };
   }

@@ -78,7 +78,7 @@ export const DEFAULT_GITHUB_CONFIG: GitHubConfig = {
   owner: 'batistaproducts',
   repo: 'pops_Enf_Visualizer',
   branch: 'main',
-  personalToken: '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',
+  personalToken: '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',
   autoSync: true,
   lastSync: new Date().toISOString(),
   syncStatus: 'synced',
@@ -95,6 +95,8 @@ export async function initializeAppData(): Promise<{
   offlineSavedIds: string[];
   bookmarkIds: string[];
 }> {
+  console.log('Antonio Batista - [POPs Enfermagem] - 2026-08-10 - Inicializando Dados');
+  
   // 1. User Profile
   let userProfile = DEFAULT_USER_PROFILE;
   try {
@@ -126,30 +128,29 @@ export async function initializeAppData(): Promise<{
   // 3. GitHub Config
   let githubConfig = DEFAULT_GITHUB_CONFIG;
   try {
-    // Always try to fetch the file config first to have it as a baseline or override
+    // Sempre tenta buscar o arquivo github_config.json primeiro (prioridade do arquivo)
     let fileConfig: Partial<GitHubConfig> = {};
     try {
-      // Use cache: 'no-store' to ensure we get the latest version from server (Vercel)
       const res = await fetch(`/github_config.json?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         fileConfig = await res.json();
-        console.log('Configuração do GitHub carregada com sucesso do arquivo.');
+        console.log('Antonio Batista - [POPs Enfermagem] - Config GitHub carregada com sucesso');
       }
     } catch (e) {
-      console.warn('Could not fetch github_config.json', e);
+      console.warn('Erro ao buscar github_config.json', e);
     }
 
     const storedConfig = localStorage.getItem(STORAGE_KEYS.GITHUB_CONFIG);
     if (storedConfig) {
       const parsedStorage = JSON.parse(storedConfig);
-      // Merge: Default < Storage < File (Arquivo tem prioridade total como solicitado)
+      // Mescla: Padrão < LocalStorage < Arquivo (Arquivo tem prioridade total)
       githubConfig = { 
         ...DEFAULT_GITHUB_CONFIG, 
         ...parsedStorage, 
         ...fileConfig 
       };
       
-      // Se o arquivo contém um token, ele deve prevalecer sobre o localStorage
+      // Forçar o token do arquivo se ele existir
       if (fileConfig.personalToken) {
         githubConfig.personalToken = fileConfig.personalToken;
       }
@@ -167,7 +168,7 @@ export async function initializeAppData(): Promise<{
     if (storedHospitals) {
       hospitals = JSON.parse(storedHospitals);
     } else {
-      const res = await fetch(`/hospitals.json?t=${Date.now()}`);
+      const res = await fetch(`/hospitals.json?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         hospitals = await res.json();
       }
@@ -187,7 +188,7 @@ export async function initializeAppData(): Promise<{
       if (storedPops) {
         pops = JSON.parse(storedPops);
       } else {
-        const res = await fetch(`/pops_data.json?t=${Date.now()}`);
+        const res = await fetch(`/pops_data.json?t=${Date.now()}`, { cache: 'no-store' });
         if (res.ok) {
           pops = await res.json();
         }
@@ -203,9 +204,9 @@ export async function initializeAppData(): Promise<{
   
   if (!pops || pops.length === 0) {
     pops = [...EXAMPLE_POPS];
+    console.log('Antonio Batista - [POPs Enfermagem] - Usando fallback de exemplos');
   } else {
     const hasExamples = pops.some(p => p.id.startsWith('example-'));
-    // Se não tiver exemplos E (não estiver conectado OU não estiver sincronizado), adiciona os exemplos
     if (!hasExamples && (!isGitHubConnected || !isSynced)) {
       pops = [...EXAMPLE_POPS, ...pops];
     }
